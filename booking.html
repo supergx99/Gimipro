@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เรียกรถรับส่งผู้สูงอายุ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen pb-10">
+
+    <div class="bg-teal-700 text-white p-4 shadow-md text-center">
+        <h1 class="font-bold text-xl"><i class="fa-solid fa-heart-pulse mr-2"></i> จองรถรับส่งผู้สูงอายุ</h1>
+        <p class="text-xs text-teal-100 mt-1">บริการดูแลความปลอดภัยในรัศมี 30 กม.</p>
+    </div>
+
+    <div class="max-w-md mx-auto p-4 space-y-4">
+        <div id="section-booking" class="bg-white rounded-2xl p-5 shadow-sm border space-y-4">
+            <h2 class="font-bold text-gray-800 text-base border-b pb-2">ข้อมูลการเดินทาง</h2>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">ชื่อผู้สูงอายุ</label>
+                <input type="text" id="patient-name" placeholder="เช่น คุณยายสมบูรณ์ ใจดี" class="w-full p-3 border rounded-xl text-sm outline-none">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">จุดรับ (บ้าน/ที่อยู่)</label>
+                <div class="flex space-x-2">
+                    <input type="text" id="pickup-location" placeholder="เช่น 45 ถ.มิตรภาพ" class="w-full p-3 border rounded-xl text-sm outline-none">
+                    <button type="button" onclick="getGPS()" class="bg-teal-100 text-teal-800 px-3 py-2 rounded-xl text-xs font-bold shrink-0 flex items-center">
+                        <i class="fa-solid fa-location-crosshairs mr-1"></i> ปักหมุด GPS
+                    </button>
+                </div>
+                <p id="gps-status" class="text-xs text-gray-400 mt-1"></p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">จุดส่ง (โรงพยาบาล/แผนก)</label>
+                <input type="text" id="dropoff-location" placeholder="เช่น รพ.ประจำจังหวัด (แผนกตา)" class="w-full p-3 border rounded-xl text-sm outline-none">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">ความต้องการพิเศษ</label>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <label class="flex items-center space-x-2 border p-2.5 rounded-xl cursor-pointer">
+                        <input type="checkbox" id="need-wheelchair" class="rounded text-teal-600">
+                        <span>ใช้วีลแชร์</span>
+                    </label>
+                    <label class="flex items-center space-x-2 border p-2.5 rounded-xl cursor-pointer">
+                        <input type="checkbox" id="need-helper" class="rounded text-teal-600">
+                        <span>ต้องการคนพยุง</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-600 mb-1">เบอร์โทรติดต่อญาติ</label>
+                <input type="tel" id="family-phone" placeholder="08X-XXX-XXXX" class="w-full p-3 border rounded-xl text-sm outline-none">
+            </div>
+
+            <button onclick="sendBooking()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3.5 rounded-xl shadow-md transition active:scale-95">
+                ยืนยันการเรียกรถ
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            databaseURL: "https://dudyadmit-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let currentMapUrl = "";
+
+        // ดึงพิกัด GPS ปัจจุบันของผู้เรียก
+        function getGPS() {
+            const status = document.getElementById('gps-status');
+            if (navigator.geolocation) {
+                status.innerText = "กำลังดึงพิกัด GPS...";
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    currentMapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                    document.getElementById('pickup-location').value = `พิกัด GPS (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+                    status.innerHTML = `<span class="text-green-600 font-bold">✓ ดึงพิกัด GPS เรียบร้อยแล้ว</span>`;
+                }, err => {
+                    status.innerHTML = `<span class="text-red-500">ไม่สามารถดึง GPS ได้ กรุณากรอกที่อยู่แทน</span>`;
+                });
+            }
+        }
+
+        function sendBooking() {
+            const name = document.getElementById('patient-name').value;
+            const pickup = document.getElementById('pickup-location').value;
+            const dropoff = document.getElementById('dropoff-location').value;
+            const phone = document.getElementById('family-phone').value;
+            const wheelchair = document.getElementById('need-wheelchair').checked;
+            const helper = document.getElementById('need-helper').checked;
+
+            if (!name || !phone || !pickup) {
+                alert('กรุณากรอกข้อมูลสำคัญให้ครบถ้วน');
+                return;
+            }
+
+            // ใช้ .push() เพื่อเพิ่มรายการงานเข้าลำดับคิว (ไม่ทับงานเก่า)
+            database.ref('jobs').push({
+                patientName: name,
+                pickup: pickup,
+                mapUrl: currentMapUrl,
+                dropoff: dropoff,
+                phone: phone,
+                wheelchair: wheelchair ? 'ใช้วีลแชร์' : 'ไม่ใช้',
+                helper: helper ? 'ต้องการคนพยุง' : 'เดินเองได้',
+                status: 'รอคนขับรับงาน',
+                timestamp: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+            }).then(() => {
+                alert('ส่งข้อมูลเรียกรถเรียบร้อยแล้ว!');
+            });
+        }
+    </script>
+</body>
+</html>
