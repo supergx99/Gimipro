@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แอพใบเสร็จใช้แล้วรวย By MHNPM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 0 auto 30px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .form-section {
+            padding: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        /* 🎯 สไตล์ส่วนสมาชิก */
+        .member-section {
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #c8e6c9;
+            margin-bottom: 12px;
+        }
+
+        .btn-scan-member {
+            background: #0288d1;
+            color: white;
+            padding: 6px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .items-section {
+            margin-top: 15px;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 32px 1.5fr 55px 55px 55px 22px;
+            gap: 3px;
+            margin-bottom: 6px;
+            align-items: center;
+        }
+
+        .item-row input {
+            padding: 6px 2px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .item-row input.item-name {
+            text-align: left;
+            padding-left: 4px;
+        }
+
+        .item-header-grid {
+            display: grid;
+            grid-template-columns: 32px 1.5fr 55px 55px 55px 22px;
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+
+        .item-header {
+            font-weight: bold;
+            background: #f5f5f5;
+            padding: 5px 1px;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .btn-add-row {
+            background: #ff9800;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .btn-scan-qr {
+            background: #009688;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        #qr-scanner-container {
+            display: none;
+            margin-top: 10px;
+            background: #222;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #qr-reader {
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .tax-discount-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .total-section {
+            background: #f9f9f9;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 10px;
+            border: 2px dashed #4CAF50;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 4px;
+            align-items: center;
+        }
+
+        .total-row.grand-final {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            border-top: 1px solid #ddd;
+            padding-top: 6px;
+            margin-top: 4px;
+        }
+
+        .cash-section {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #ccc;
+        }
+
+        .cash-input-box {
+            width: 110px !important;
+            text-align: right;
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 16px !important;
+            padding: 4px 6px !important;
+        }
+
+        .change-row {
+            font-size: 16px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-print { background: #4CAF50; color: white; }
+        .btn-clear { background: #9e9e9e; color: white; }
+
+        .receipt-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            display: none;
+        }
+
+        .receipt-preview.show { display: block; }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .receipt-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .receipt-note-block {
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px dashed #aaa;
+            font-size: 11px;
+            color: #444;
+            word-break: break-all;
+        }
+
+        .receipt-summary-block {
+            border-top: 2px dashed #333;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        /* 🎯 สไตล์ส่วนแสดงสมาชิกด้านล่างใบเสร็จ */
+        .receipt-member-block {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed #333;
+            font-size: 12px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        /* Dashboard */
+        .dashboard-section {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-top: 5px solid #2980b9;
+        }
+
+        .dashboard-title {
+            font-size: 16px;
+            margin-bottom: 12px;
+            text-align: center;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 8px;
+        }
+
+        .filter-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+            background: #34495e;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .filter-group label {
+            color: #f1c40f;
+            font-size: 12px;
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .dash-card {
+            background: #34495e;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .dash-card.highlight {
+            background: #1e3799;
+            border: 1px solid #4a69bd;
+        }
+
+        .dash-card h4 { font-size: 11px; margin-bottom: 4px; color: #bdc3c7; }
+        .dash-card p { font-size: 15px; font-weight: bold; }
+        .dash-card .profit-text { color: #2ecc71; }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 11px;
+            background: #34495e;
+        }
+
+        .history-table th, .history-table td {
+            border: 1px solid #4f5d73;
+            padding: 5px 3px;
+            text-align: center;
+        }
+
+        .history-table th { background: #1a252f; }
+
+        .btn-del-bill {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 2px 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .btn-danger-small {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .receipt-for-image {
+            width: 340px;
+            padding: 25px 20px;
+            background: white;
+            font-family: 'Arial', sans-serif;
+            color: #000;
+        }
+        .receipt-for-image .img-header { text-align: center; margin-bottom: 12px; }
+        .receipt-for-image .img-header h2 { font-size: 22px; font-weight: bold; margin-bottom: 4px; }
+        .receipt-for-image .img-header p { font-size: 12px; color: #444; margin: 2px 0; }
+        .receipt-for-image .divider { border-top: 2px dashed #000; margin: 10px 0; }
+        .receipt-for-image .img-item { display: flex; font-size: 13px; margin-bottom: 5px; }
+        .receipt-for-image .img-item-name { flex: 1; }
+        .receipt-for-image .img-item-total { width: 75px; text-align: right; font-weight: bold; }
+        .receipt-for-image .img-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; color: #333; }
+        .receipt-for-image .img-row.bold { font-size: 16px; font-weight: bold; color: #000; margin-top: 4px; }
+        .receipt-for-image .img-note { font-size: 11px; color: #444; margin-top: 8px; font-style: italic; background: #f9f9f9; padding: 5px; border-radius: 4px; border-left: 3px solid #4CAF50; word-break: break-all; }
+        .receipt-for-image .img-member { margin-top: 10px; padding: 6px; background: #e8f5e9; border-radius: 4px; font-size: 12px; color: #1b5e20; border-left: 3px solid #2e7d32; }
+        .receipt-for-image .img-footer { text-align: center; margin-top: 20px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧾 แอพใบเสร็จใช้แล้วรวย By MHNPM</h1>
+            <p style="font-size: 11px; opacity: 0.9;">ระบบคำนวณอัตโนมัติ + บันทึกร่างกันข้อมูลหาย</p>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="shopName">ชื่อร้าน:</label>
+                <input type="text" id="shopName" value=" ร้านจุใจ ☎️09999999" style="background-color: #f0f0f0; color: #555;">
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="receiptDate">วันที่:</label>
+                    <input type="date" id="receiptDate" onchange="autoSaveForm(); updateDashboard();">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="receiptTime">เวลา:</label>
+                    <input type="time" id="receiptTime" onchange="autoSaveForm();">
+                </div>
+            </div>
+
+            <!-- 🎯 ส่วนข้อมูลสมาชิก + ปุ่มสแกน QR สมาชิก -->
+            <div class="member-section">
+                <label style="color:#2e7d32;">👤 ข้อมูลสมาชิก:</label>
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <input type="text" id="memberName" placeholder="ชื่อสมาชิก" oninput="autoSaveForm()" style="flex: 1;">
+                    <input type="text" id="memberId" placeholder="รหัสสมาชิก" oninput="autoSaveForm()" style="flex: 1;">
+                </div>
+                <button type="button" class="btn-scan-member" onclick="toggleQRScanner('member')">📷 สแกน QR/บาร์โค้ด สมาชิก</button>
+            </div>
+
+            <div class="items-section">
+                <h3 style="margin-bottom: 8px; color: #333; font-size: 15px;">รายการสินค้า</h3>
+                <div class="item-header-grid">
+                    <div class="item-header">จน.</div>
+                    <div class="item-header">รายการ</div>
+                    <div class="item-header">ทุน</div>
+                    <div class="item-header">ขาย</div>
+                    <div class="item-header">รวม</div>
+                    <div class="item-header">ลบ</div>
+                </div>
+
+                <div id="itemsList"></div>
+                
+                <div style="display: flex; gap: 6px;">
+                    <button type="button" class="btn-add-row" onclick="addNewRow()" style="flex: 1;">➕ เพิ่มรายการ</button>
+                    <button type="button" class="btn-scan-qr" onclick="toggleQRScanner('product')" style="flex: 1;">📷 สแกน QR สินค้า</button>
+                </div>
+
+                <!-- 🎯 กรอบแสดงกล้องสแกน QR Code -->
+                <div id="qr-scanner-container">
+                    <div id="qr-reader"></div>
+                    <p id="qr-scan-title" style="color:white; font-size:12px; margin-top:5px;"></p>
+                    <button type="button" onclick="stopQRScanner()" style="margin-top: 8px; background: #f44336; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer;">❌ ปิดกล้อง</button>
+                </div>
+            </div>
+
+            <div class="tax-discount-grid">
+                <div>
+                    <label for="discountPercent">ส่วนลด (%) :</label>
+                    <input type="number" id="discountPercent" value="0" min="0" max="100" onfocus="this.select()" oninput="calculateTotal()">
+                </div>
+                <div>
+                    <label for="vatPercent">ภาษี VAT (%) :</label>
+                    <input type="number" id="vatPercent" value="0" min="0" max="100" onfocus="this.select()" oninput="calculateTotal()">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 12px;">
+                <label for="receiptNote">📝 หมายเหตุในใบเสร็จ (ถ้ามี):</label>
+                <textarea id="receiptNote" rows="2" placeholder="เงินสด / โอนเงิน / ประกันสินค้า..." oninput="autoSaveForm()"></textarea>
+            </div>
+
+            <div class="total-section">
+                <div class="total-row">
+                    <span>รวมเป็นเงิน:</span>
+                    <span><span id="lblSubTotal">0.00</span> บาท</span>
+                </div>
+                <div class="total-row">
+                    <span>ส่วนลด:</span>
+                    <span><span id="lblDiscount">0.00</span> บาท</span>
+                </div>
+                <div class="total-row">
+                    <span>ภาษีมูลค่าเพิ่ม (VAT):</span>
+                    <span><span id="lblVat">0.00</span> บาท</span>
+                </div>
+                <div class="total-row grand-final">
+                    <span>รวมทั้งสิ้น:</span>
+                    <span><span id="lblGrandTotal">0.00</span> บาท</span>
+                </div>
+
+                <div class="cash-section">
+                    <div class="total-row">
+                        <label for="cashPaid" style="margin:0; font-size:14px; color:#2e7d32;">💵 รับเงินสด:</label>
+                        <span><input type="number" id="cashPaid" class="cash-input-box" placeholder="0.00" min="0" step="0.01" onfocus="this.select()" oninput="calculateTotal()"> บาท</span>
+                    </div>
+                    <div class="total-row change-row">
+                        <span>🪙 เงินทอน:</span>
+                        <span><span id="lblChange">0.00</span> บาท</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="btn btn-print" onclick="generateReceipt()">🧾 สร้างและพิมพ์ใบเสร็จ</button>
+                <button class="btn btn-clear" onclick="clearAll()">🗑️ ล้างข้อมูล</button>
+            </div>
+        </div>
+
+        <div class="receipt-preview" id="receiptPreview">
+            <div class="receipt-header">
+                <h2 id="receiptShopName"></h2>
+                <p style="font-size: 12px; margin-top:3px;">ใบเสร็จรับเงิน / RECEIPT</p>
+                <p style="font-size: 11px;">วันที่: <span id="receiptDisplayDate"></span> เวลา: <span id="receiptDisplayTime"></span></p>
+            </div>
+            <div id="receiptItems"></div>
+            
+            <div id="receiptPreviewNote" class="receipt-note-block" style="display:none;"></div>
+            
+            <div class="receipt-summary-block">
+                <div class="receipt-line"><span>รวมเป็นเงิน:</span><span id="pSubTotal">0.00</span></div>
+                <div class="receipt-line"><span>ส่วนลด:</span><span id="pDiscount">0.00</span></div>
+                <div class="receipt-line"><span>ภาษีมูลค่าเพิ่ม (VAT):</span><span id="pVat">0.00</span></div>
+                <div class="receipt-line" style="font-weight: bold; font-size:15px; margin-top:4px; border-bottom: 1px dashed #333; padding-bottom: 4px;">
+                    <span>รวมทั้งสิ้น:</span><span id="pGrandTotal">0.00</span>
+                </div>
+                <div class="receipt-line" style="margin-top: 4px;"><span>รับเงินสด:</span><span id="pCashPaid">0.00</span></div>
+                <div class="receipt-line" style="font-weight: bold;"><span>เงินทอน:</span><span id="pChange">0.00</span></div>
+            </div>
+
+            <!-- 🎯 แสดงข้อมูลสมาชิกในใบเสร็จ Preview ด้านล่างสุด -->
+            <div id="receiptPreviewMember" class="receipt-member-block" style="display:none;"></div>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <p style="font-size: 12px;">ขอบคุณที่ใช้บริการ</p>
+                <button class="btn btn-print" onclick="downloadAndShareReceipt()" style="margin-top: 12px; width:100%;">📲 บันทึกรูป & ส่งแชร์ / ปริ้นเตอร์</button>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <div class="dashboard-title">📊 สรุปยอดขาย & กำไรย้อนหลัง</div>
+            
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="selectYear">📅 เลือกปี (พ.ศ.):</label>
+                    <select id="selectYear" onchange="updateDashboard()"></select>
+                </div>
+                <div class="filter-group">
+                    <label for="selectMonth">🔎 เลือกเดือน:</label>
+                    <select id="selectMonth" onchange="updateDashboard()">
+                        <option value="1">มกราคม</option><option value="2">กุมภาพันธ์</option>
+                        <option value="3">มีนาคม</option><option value="4">เมษายน</option>
+                        <option value="5">พฤษภาคม</option><option value="6">มิถุนายน</option>
+                        <option value="7">กรกฎาคม</option><option value="8">สิงหาคม</option>
+                        <option value="9">กันยายน</option><option value="10">ตุลาคม</option>
+                        <option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-group" style="background: #34495e; padding: 8px; border-radius: 8px; margin-bottom: 12px;">
+                <label for="filterDayDate" style="color:#00d2d3;">📆 เลือกระบุวันที่เจาะจง (ดูยอดรายวัน):</label>
+                <input type="date" id="filterDayDate" onchange="updateDashboard()" style="font-size: 13px; padding: 5px;">
+            </div>
+
+            <h3 style="font-size:13px; margin-bottom:5px; color:#00d2d3;">📌 ยอดสรุปประจำวันที่เลือก</h3>
+            <div class="dashboard-grid">
+                <div class="dash-card highlight"><h4>ยอดขายวันนี้</h4><p id="dSales">0.00</p></div>
+                <div class="dash-card highlight"><h4>กำไรสุทธิวันนี้</h4><p id="dProfit" class="profit-text">0.00</p></div>
+            </div>
+
+            <h3 style="font-size:13px; margin-bottom:5px; color:#f1c40f;">📅 ยอดสรุปประจำเดือนที่เลือก</h3>
+            <div class="dashboard-grid">
+                <div class="dash-card"><h4>ยอดขายรวม</h4><p id="mSales">0.00</p></div>
+                <div class="dash-card"><h4>กำไรสุทธิ</h4><p id="mProfit" class="profit-text">0.00</p></div>
+            </div>
+
+            <h3 style="font-size:13px; margin-bottom:5px; color:#f1c40f;">🗓️ ยอดสรุปภาพรวมของปีที่เลือก</h3>
+            <div class="dashboard-grid">
+                <div class="dash-card"><h4>ยอดขายรวมทั้งปี</h4><p id="ySales">0.00</p></div>
+                <div class="dash-card"><h4>กำไรสุทธิทั้งปี</h4><p id="yProfit" class="profit-text">0.00</p></div>
+            </div>
+
+            <h3 style="font-size:12px; margin-bottom:5px;">📋 รายการบิลตามตัวกรองเดือน/ปี</h3>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>วันที่</th>
+                        <th>ยอดขาย</th>
+                        <th>กำไร</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="historyRows"></tbody>
+            </table>
+            <button class="btn-danger-small" onclick="clearAllHistory()">🗑️ ล้างประวัติยอดขายทั้งหมด</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <script>
+        let rowCounter = 0;
+        let html5QrCode = null;
+        let currentScanType = 'product'; // 'product' หรือ 'member'
+
+        function addNewRow(qtyVal = 1, itemVal = '', costVal = '', priceVal = '') {
+            rowCounter++;
+            const itemsList = document.getElementById('itemsList');
+            const itemRow = document.createElement('div');
+            itemRow.className = 'item-row';
+            itemRow.id = `row_${rowCounter}`;
+            
+            itemRow.innerHTML = `
+                <input type="number" id="qty_${rowCounter}" value="${qtyVal}" min="1" onfocus="this.select()" oninput="calculateItemTotal(${rowCounter})">
+                <input type="text" id="item_${rowCounter}" class="item-name" value="${itemVal}" placeholder="ชื่อสินค้า" oninput="autoSaveForm()">
+                <input type="number" id="cost_${rowCounter}" value="${costVal}" placeholder="0" min="0" step="0.01" onfocus="this.select()" oninput="calculateTotal()">
+                <input type="number" id="price_${rowCounter}" value="${priceVal}" placeholder="0" min="0" step="0.01" onfocus="this.select()" oninput="calculateItemTotal(${rowCounter})">
+                <input type="number" id="total_${rowCounter}" placeholder="0.00" readonly style="background:#f9f9f9;">
+                <button type="button" class="btn-delete" onclick="deleteRow(${rowCounter})">✕</button>
+            `;
+            
+            itemsList.appendChild(itemRow);
+            calculateItemTotal(rowCounter);
+        }
+
+        function deleteRow(id) {
+            const row = document.getElementById(`row_${id}`);
+            if(row) { 
+                row.remove(); 
+                calculateTotal(); 
+            }
+        }
+
+        function calculateItemTotal(id) {
+            const qty = parseFloat(document.getElementById(`qty_${id}`).value) || 0;
+            const price = parseFloat(document.getElementById(`price_${id}`).value) || 0;
+            document.getElementById(`total_${id}`).value = (qty * price).toFixed(2);
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let subTotal = 0, totalCost = 0;
+            const rows = document.getElementById('itemsList').querySelectorAll('.item-row');
+            
+            rows.forEach(row => {
+                const id = row.id.split('_')[1];
+                const qty = parseFloat(document.getElementById(`qty_${id}`).value) || 0;
+                const price = parseFloat(document.getElementById(`price_${id}`).value) || 0;
+                const cost = parseFloat(document.getElementById(`cost_${id}`).value) || 0;
+                subTotal += (qty * price);
+                totalCost += (qty * cost);
+            });
+
+            const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
+            const discountAmount = subTotal * (discountPercent / 100);
+            const afterDiscount = subTotal - discountAmount;
+
+            const vatPercent = parseFloat(document.getElementById('vatPercent').value) || 0;
+            const vatAmount = afterDiscount * (vatPercent / 100);
+            const grandTotal = afterDiscount + vatAmount;
+
+            const cashPaidVal = document.getElementById('cashPaid').value;
+            const cashPaid = parseFloat(cashPaidVal) || 0;
+            let change = 0;
+            
+            if (cashPaid >= grandTotal && grandTotal > 0) {
+                change = cashPaid - grandTotal;
+            }
+
+            document.getElementById('lblSubTotal').textContent = subTotal.toFixed(2);
+            document.getElementById('lblDiscount').textContent = discountAmount.toFixed(2);
+            document.getElementById('lblVat').textContent = vatAmount.toFixed(2);
+            document.getElementById('lblGrandTotal').textContent = grandTotal.toFixed(2);
+            document.getElementById('lblChange').textContent = change.toFixed(2);
+
+            autoSaveForm();
+            return { subTotal, discountAmount, vatAmount, grandTotal, totalCost, cashPaid, change };
+        }
+
+        /* 🎯 ระบบจัดการกล้องสแกน QR Code (รองรับทั้ง สินค้า และ สมาชิก) */
+        function toggleQRScanner(type = 'product') {
+            currentScanType = type;
+            const container = document.getElementById('qr-scanner-container');
+            if (container.style.display === 'block') {
+                stopQRScanner();
+            } else {
+                startQRScanner();
+            }
+        }
+
+        function startQRScanner() {
+            const container = document.getElementById('qr-scanner-container');
+            const titleEl = document.getElementById('qr-scan-title');
+            container.style.display = 'block';
+
+            if(currentScanType === 'member') {
+                titleEl.textContent = '📷 กำลังสแกน QR/บาร์โค้ด ข้อมูลสมาชิก...';
+            } else {
+                titleEl.textContent = '📷 กำลังสแกน QR/บาร์โค้ด สินค้า...';
+            }
+
+            html5QrCode = new Html5Qrcode("qr-reader");
+            const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+
+            html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+            .catch(err => {
+                alert("ไม่สามารถเปิดกล้องได้: " + err);
+                stopQRScanner();
+            });
+        }
+
+        function stopQRScanner() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    document.getElementById('qr-scanner-container').style.display = 'none';
+                }).catch(err => {
+                    console.error("Failed to stop scanner", err);
+                    document.getElementById('qr-scanner-container').style.display = 'none';
+                });
+            } else {
+                document.getElementById('qr-scanner-container').style.display = 'none';
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            if (currentScanType === 'member') {
+                processMemberScannedData(decodedText);
+            } else {
+                processScannedData(decodedText);
+            }
+            stopQRScanner();
+        }
+
+        /* 🎯 ประมวลผลข้อมูลสแกนสมาชิก */
+        function processMemberScannedData(text) {
+            let mName = text;
+            let mId = text;
+
+            try {
+                const data = JSON.parse(text);
+                if (data.name) mName = data.name;
+                if (data.id) mId = data.id;
+                else if (data.memberId) mId = data.memberId;
+            } catch (e) {
+                // หากไม่ได้เป็น JSON จะถือว่าเป็นรหัสสมาชิกเป็นหลัก
+            }
+
+            document.getElementById('memberId').value = mId;
+            if (mName !== mId) {
+                document.getElementById('memberName').value = mName;
+            }
+            autoSaveForm();
+        }
+
+        function processScannedData(text) {
+            let name = text;
+            let cost = '';
+            let price = '';
+
+            try {
+                const data = JSON.parse(text);
+                if (data.name) name = data.name;
+                if (data.price) price = data.price;
+                if (data.cost) cost = data.cost;
+            } catch (e) {}
+
+            const rows = document.getElementById('itemsList').querySelectorAll('.item-row');
+            let addedToEmpty = false;
+
+            rows.forEach(row => {
+                const id = row.id.split('_')[1];
+                const inputName = document.getElementById(`item_${id}`).value;
+                if (!inputName && !addedToEmpty) {
+                    document.getElementById(`item_${id}`).value = name;
+                    if (cost) document.getElementById(`cost_${id}`).value = cost;
+                    if (price) document.getElementById(`price_${id}`).value = price;
+                    calculateItemTotal(id);
+                    addedToEmpty = true;
+                }
+            });
+
+            if (!addedToEmpty) {
+                addNewRow(1, name, cost, price);
+            }
+        }
+
+        function autoSaveForm() {
+            const itemsData = [];
+            const rows = document.getElementById('itemsList').querySelectorAll('.item-row');
+            
+            rows.forEach(row => {
+                const id = row.id.split('_')[1];
+                itemsData.push({
+                    qty: document.getElementById(`qty_${id}`).value,
+                    item: document.getElementById(`item_${id}`).value,
+                    cost: document.getElementById(`cost_${id}`).value,
+                    price: document.getElementById(`price_${id}`).value
+                });
+            });
+
+            const formData = {
+                discount: document.getElementById('discountPercent').value,
+                vat: document.getElementById('vatPercent').value,
+                note: document.getElementById('receiptNote').value,
+                cashPaid: document.getElementById('cashPaid').value,
+                memberName: document.getElementById('memberName').value,
+                memberId: document.getElementById('memberId').value,
+                items: itemsData
+            };
+
+            localStorage.setItem('posTempDraft', JSON.stringify(formData));
+        }
+
+        function restoreSavedForm() {
+            const saved = localStorage.getItem('posTempDraft');
+            if (!saved) return false;
+
+            try {
+                const formData = JSON.parse(saved);
+                if (formData.discount) document.getElementById('discountPercent').value = formData.discount;
+                if (formData.vat) document.getElementById('vatPercent').value = formData.vat;
+                if (formData.note) document.getElementById('receiptNote').value = formData.note;
+                if (formData.cashPaid !== undefined) document.getElementById('cashPaid').value = formData.cashPaid;
+                if (formData.memberName) document.getElementById('memberName').value = formData.memberName;
+                if (formData.memberId) document.getElementById('memberId').value = formData.memberId;
+
+                if (formData.items && formData.items.length > 0) {
+                    document.getElementById('itemsList').innerHTML = '';
+                    rowCounter = 0;
+                    formData.items.forEach(item => {
+                        addNewRow(item.qty, item.item, item.cost, item.price);
+                    });
+                    return true;
+                }
+            } catch (e) {
+                console.error("Error restoring draft", e);
+            }
+            return false;
+        }
+
+        function generateReceipt() {
+            const totals = calculateTotal();
+            const shopName = document.getElementById('shopName').value || '  ร้าน จุใจ  โทร.☎️09999999 ';
+            const date = document.getElementById('receiptDate').value || new Date().toISOString().split('T')[0];
+            const time = document.getElementById('receiptTime').value || new Date().toTimeString().slice(0, 5);
+            const noteText = document.getElementById('receiptNote').value.trim();
+            
+            const memberName = document.getElementById('memberName').value.trim();
+            const memberId = document.getElementById('memberId').value.trim();
+
+            document.getElementById('receiptShopName').textContent = shopName;
+            document.getElementById('receiptDisplayDate').textContent = formatThaiDate(date);
+            document.getElementById('receiptDisplayTime').textContent = time;
+            
+            const previewNoteBlock = document.getElementById('receiptPreviewNote');
+            if(noteText) {
+                previewNoteBlock.textContent = `หมายเหตุ: ${noteText}`;
+                previewNoteBlock.style.display = 'block';
+            } else {
+                previewNoteBlock.style.display = 'none';
+            }
+
+            const receiptItems = document.getElementById('receiptItems');
+            receiptItems.innerHTML = '';
+            
+            let hasItems = false;
+            const rows = document.getElementById('itemsList').querySelectorAll('.item-row');
+            
+            rows.forEach(row => {
+                const id = row.id.split('_')[1];
+                const itemName = document.getElementById(`item_${id}`).value;
+                const qty = document.getElementById(`qty_${id}`).value;
+                const total = document.getElementById(`total_${id}`).value;
+                
+                if (itemName && qty && total > 0) {
+                    hasItems = true;
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'receipt-line';
+                    itemDiv.innerHTML = `<span>${itemName} x ${qty}</span><span>${parseFloat(total).toFixed(2)}</span>`;
+                    receiptItems.appendChild(itemDiv);
+                }
+            });
+            
+            if (!hasItems) {
+                alert('กรุณากรอกข้อมูลสินค้าให้ถูกต้องก่อนครับ');
+                return;
+            }
+            
+            document.getElementById('pSubTotal').textContent = totals.subTotal.toFixed(2);
+            document.getElementById('pDiscount').textContent = totals.discountAmount.toFixed(2);
+            document.getElementById('pVat').textContent = totals.vatAmount.toFixed(2);
+            document.getElementById('pGrandTotal').textContent = totals.grandTotal.toFixed(2);
+            document.getElementById('pCashPaid').textContent = totals.cashPaid.toFixed(2);
+            document.getElementById('pChange').textContent = totals.change.toFixed(2);
+
+            /* 🎯 แสดงข้อมูลสมาชิกใน Receipt Preview ล่างสุด */
+            const previewMemberBlock = document.getElementById('receiptPreviewMember');
+            if (memberName || memberId) {
+                let memberInfoHtml = '👤 ข้อมูลสมาชิก:<br>';
+                if (memberName) memberInfoHtml += `ชื่อ: ${memberName} `;
+                if (memberId) memberInfoHtml += `(รหัส: ${memberId})`;
+                previewMemberBlock.innerHTML = memberInfoHtml;
+                previewMemberBlock.style.display = 'block';
+            } else {
+                previewMemberBlock.style.display = 'none';
+            }
+            
+            saveTransaction(date, totals.grandTotal, totals.totalCost);
+            
+            document.getElementById('receiptPreview').classList.add('show');
+            document.getElementById('receiptPreview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function saveTransaction(dateStr, sales, cost) {
+            const profit = sales - cost;
+            let db = JSON.parse(localStorage.getItem('posSalesHistoryV4')) || [];
+            const billId = Date.now(); 
+            db.push({ id: billId, date: dateStr, sales: sales, cost: cost, profit: profit });
+            localStorage.setItem('posSalesHistoryV4', JSON.stringify(db));
+            
+            buildYearDropdown();
+            
+            const savedDate = new Date(dateStr);
+            document.getElementById('selectYear').value = savedDate.getFullYear();
+            document.getElementById('selectMonth').value = savedDate.getMonth() + 1;
+            document.getElementById('filterDayDate').value = dateStr;
+            
+            updateDashboard();
+        }
+
+        function deleteBill(billId) {
+            if (confirm('คุณต้องการลบบิลรายการนี้ออกจากประวัติการขายใช่ไหม?')) {
+                let db = JSON.parse(localStorage.getItem('posSalesHistoryV4')) || [];
+                db = db.filter(item => item.id !== billId);
+                localStorage.setItem('posSalesHistoryV4', JSON.stringify(db));
+                
+                buildYearDropdown();
+                updateDashboard(); 
+            }
+        }
+
+        function buildYearDropdown() {
+            const db = JSON.parse(localStorage.getItem('posSalesHistoryV4')) || [];
+            const selectYear = document.getElementById('selectYear');
+            const currentSelectedValue = selectYear.value;
+
+            let yearsSet = new Set();
+            db.forEach(item => {
+                if (item.date) {
+                    const y = new Date(item.date).getFullYear();
+                    if (!isNaN(y)) yearsSet.add(y);
+                }
+            });
+
+            const todayYear = new Date().getFullYear();
+            yearsSet.add(todayYear - 1);
+            yearsSet.add(todayYear);
+            yearsSet.add(todayYear + 1);
+
+            let sortedYears = Array.from(yearsSet).sort((a, b) => a - b);
+
+            selectYear.innerHTML = '';
+            sortedYears.forEach(year => {
+                const opt = document.createElement('option');
+                opt.value = year;
+                opt.textContent = `${year + 543}`;
+                selectYear.appendChild(opt);
+            });
+
+            if (currentSelectedValue && sortedYears.includes(parseInt(currentSelectedValue))) {
+                selectYear.value = currentSelectedValue;
+            } else {
+                selectYear.value = todayYear;
+            }
+        }
+
+        function updateDashboard() {
+            const db = JSON.parse(localStorage.getItem('posSalesHistoryV4')) || [];
+            const selectYearEl = document.getElementById('selectYear');
+            
+            if(!selectYearEl.value) return; 
+            
+            const selectedYear = parseInt(selectYearEl.value);
+            const selectedMonth = parseInt(document.getElementById('selectMonth').value);
+            const selectedDayDate = document.getElementById('filterDayDate').value;
+
+            let dSalesSum = 0, dProfitSum = 0;
+            let mSalesSum = 0, mProfitSum = 0;
+            let ySalesSum = 0, yProfitSum = 0;
+            let filteredHistory = [];
+
+            db.forEach(item => {
+                const itemDate = new Date(item.date);
+                const itemYear = itemDate.getFullYear();
+                const itemMonth = itemDate.getMonth() + 1;
+
+                if (selectedDayDate && item.date === selectedDayDate) {
+                    dSalesSum += item.sales;
+                    dProfitSum += item.profit;
+                }
+
+                if (itemYear === selectedYear) {
+                    ySalesSum += item.sales;
+                    yProfitSum += item.profit;
+
+                    if (itemMonth === selectedMonth) {
+                        mSalesSum += item.sales;
+                        mProfitSum += item.profit;
+                        filteredHistory.push(item);
+                    }
+                }
+            });
+
+            document.getElementById('dSales').textContent = dSalesSum.toFixed(2);
+            document.getElementById('dProfit').textContent = dProfitSum.toFixed(2);
+            document.getElementById('mSales').textContent = mSalesSum.toFixed(2);
+            document.getElementById('mProfit').textContent = mProfitSum.toFixed(2);
+            document.getElementById('ySales').textContent = ySalesSum.toFixed(2);
+            document.getElementById('yProfit').textContent = yProfitSum.toFixed(2);
+
+            const historyRows = document.getElementById('historyRows');
+            historyRows.innerHTML = '';
+            
+            const displayList = filteredHistory.reverse();
+            
+            if(displayList.length === 0) {
+                historyRows.innerHTML = `<tr><td colspan="4" style="color:#aaa;">ไม่พบประวัติการขายในเดือน/ปีนี้</td></tr>`;
+            } else {
+                displayList.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${item.date}</td>
+                        <td>${item.sales.toFixed(2)}</td>
+                        <td style="color:#2ecc71; font-weight:bold;">${item.profit.toFixed(2)}</td>
+                        <td><button class="btn-del-bill" onclick="deleteBill(${item.id})">❌ ลบ</button></td>
+                    `;
+                    historyRows.appendChild(tr);
+                });
+            }
+        }
+
+        function clearAllHistory() {
+            if (confirm('ลบประวัติยอดขายทั้งหมดอย่างถาวรใช่ไหมครับ?')) {
+                localStorage.removeItem('posSalesHistoryV4');
+                buildYearDropdown();
+                updateDashboard();
+            }
+        }
+
+        function clearAll() {
+            if (confirm('ต้องการล้างข้อมูลฟอร์มปัจจุบัน?')) {
+                localStorage.removeItem('posTempDraft');
+                document.getElementById('itemsList').innerHTML = '';
+                document.getElementById('discountPercent').value = '0';
+                document.getElementById('vatPercent').value = '0';
+                document.getElementById('receiptNote').value = '';
+                document.getElementById('cashPaid').value = '';
+                document.getElementById('memberName').value = '';
+                document.getElementById('memberId').value = '';
+                rowCounter = 0;
+                addNewRow();
+                calculateTotal();
+                document.getElementById('receiptPreview').classList.remove('show');
+            }
+        }
+
+        function downloadAndShareReceipt() {
+            const totals = calculateTotal();
+            const receiptForImage = document.createElement('div');
+            receiptForImage.className = 'receipt-for-image';
+            
+            const shopName = document.getElementById('shopName').value || 'ร้านของคุณ';
+            const date = document.getElementById('receiptDate').value || new Date().toISOString().split('T')[0];
+            const time = document.getElementById('receiptTime').value || new Date().toTimeString().slice(0, 5);
+            const noteText = document.getElementById('receiptNote').value.trim();
+            const memberName = document.getElementById('memberName').value.trim();
+            const memberId = document.getElementById('memberId').value.trim();
+
+            let receiptHTML = `
+                <div class="img-header">
+                    <h2>${shopName}</h2>
+                    <p>*** ใบเสร็จรับเงิน / RECEIPT ***</p>
+                    <p>วันที่: ${formatThaiDate(date)}</p>
+                    <p>เวลา: ${time} น.</p>
+                </div>
+                <div class="divider"></div>
+            `;
+            
+            const rows = document.getElementById('itemsList').querySelectorAll('.item-row');
+            rows.forEach(row => {
+                const id = row.id.split('_')[1];
+                const itemName = document.getElementById(`item_${id}`).value;
+                const qty = document.getElementById(`qty_${id}`).value;
+                const price = document.getElementById(`price_${id}`).value;
+                const total = document.getElementById(`total_${id}`).value;
+                
+                if (itemName && qty && price) {
+                    receiptHTML += `
+                        <div class="img-item">
+                            <div class="img-item-name">${itemName}<br><small style="color:#555;">${qty} x ${parseFloat(price).toFixed(2)}</small></div>
+                            <div class="img-item-total">${parseFloat(total).toFixed(2)}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            if(noteText) {
+                receiptHTML += `<div class="img-note">📝 หมายเหตุ: ${noteText}</div>`;
+            }
+
+            receiptHTML += `
+                <div class="divider"></div>
+                <div class="img-row"><span>รวมเป็นเงิน (Subtotal):</span><span>${totals.subTotal.toFixed(2)}</span></div>
+                <div class="img-row"><span>ส่วนลด (Discount):</span><span>-${totals.discountAmount.toFixed(2)}</span></div>
+                <div class="img-row"><span>ภาษี (VAT ${document.getElementById('vatPercent').value}%):</span><span>${totals.vatAmount.toFixed(2)}</span></div>
+                <div class="divider"></div>
+                <div class="img-row bold"><span>รวมทั้งสิ้น (NET TOTAL):</span><span>${totals.grandTotal.toFixed(2)} บาท</span></div>
+                <div class="img-row" style="margin-top:6px;"><span>รับเงินสด (Cash):</span><span>${totals.cashPaid.toFixed(2)} บาท</span></div>
+                <div class="img-row bold" style="color:#d32f2f;"><span>เงินทอน (Change):</span><span>${totals.change.toFixed(2)} บาท</span></div>
+            `;
+
+            /* 🎯 เพิ่มแสดงข้อมูลสมาชิกด้านล่างสุดของรูปภาพใบเสร็จ */
+            if (memberName || memberId) {
+                receiptHTML += `<div class="img-member">👤 ข้อมูลสมาชิก: `;
+                if (memberName) receiptHTML += `${memberName} `;
+                if (memberId) receiptHTML += `(ID: ${memberId})`;
+                receiptHTML += `</div>`;
+            }
+
+            receiptHTML += `<div class="img-footer"><p> ขอบคุณที่อุดหนุนครับ </p></div>`;
+            
+            receiptForImage.innerHTML = receiptHTML;
+            receiptForImage.style.position = 'absolute';
+            receiptForImage.style.left = '-9999px';
+            document.body.appendChild(receiptForImage);
+            
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            html2canvas(receiptForImage, { width: 340, height: receiptForImage.scrollHeight + 40, scale: 3, backgroundColor: '#ffffff' }).then(function(canvas) {
+                
+                if (isIOS) {
+                    const imgData = canvas.toDataURL('image/png');
+                    const newWindow = window.open();
+                    if (newWindow) {
+                        newWindow.document.write(`<img src="${imgData}" style="width:100%; max-width:400px; display:block; margin:20px auto; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.2);"><p style="text-align:center; font-family:sans-serif; color:#555; font-size:14px; padding: 0 10px;">แตะที่รูปค้างไว้เพื่อ <b>บันทึกรูปภาพ</b> หรือ <b>กดแชร์</b> ได้เลยครับ</p>`);
+                    } else {
+                        const win = window.open("");
+                        win.document.write(`<img src="${imgData}" style="width:100%;">`);
+                    }
+                    document.body.removeChild(receiptForImage);
+                    return;
+                }
+
+                canvas.toBlob(function(blob) {
+                    const fileName = `Receipt_${date}.png`;
+                    const file = new File([blob], fileName, { type: 'image/png' });
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            files: [file],
+                            title: 'ใบเสร็จรับเงิน',
+                            text: `ใบเสร็จรับเงิน วันที่ ${date}`
+                        }).catch(err => console.log('User cancelled share', err));
+                    } else {
+                        const link = document.createElement('a');
+                        link.download = fileName;
+                        link.href = URL.createObjectURL(blob);
+                        link.click();
+                        URL.revokeObjectURL(link.href);
+                    }
+                }, 'image/png');
+                
+                document.body.removeChild(receiptForImage);
+            });
+        }
+
+        function formatThaiDate(dateString) {
+            const date = new Date(dateString);
+            const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+            return `${date.getDate()} ${thaiMonths[date.getMonth()]} ${date.getFullYear() + 543}`;
+        }
+
+        function initialize() {
+            const restored = restoreSavedForm();
+            if (!restored) {
+                addNewRow();
+            }
+
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const todayLocalStr = `${year}-${month}-${day}`;
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const currentTimeStr = `${hours}:${minutes}`;
+
+            document.getElementById('receiptDate').value = todayLocalStr;
+            document.getElementById('receiptTime').value = currentTimeStr;
+            document.getElementById('filterDayDate').value = todayLocalStr;
+
+            buildYearDropdown();
+            document.getElementById('selectMonth').value = now.getMonth() + 1;
+            updateDashboard();
+        }
+
+        initialize();
+    </script>
+</body>
+</html>
